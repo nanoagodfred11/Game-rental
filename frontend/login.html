@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - GameZone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        dark: '#1e1b4b',
+                        accent: '#22d3ee'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .poster-grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 4px;
+            opacity: 0.35;
+        }
+        .poster-grid-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 20, 0.78);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white flex items-center justify-center px-4 bg-dark">
+    <!-- Game Poster Background -->
+    <div class="poster-grid-bg">
+        <img src="https://media.rawg.io/media/games/5ec/5ecac5cb026ec26a56efcc546364e348.jpg" alt="">
+        <img src="https://media.rawg.io/media/games/4be/4be6a6ad0364751a96229c56bf69be59.jpg" alt="">
+        <img src="https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg" alt="">
+        <img src="https://media.rawg.io/media/games/490/49016e06ae2103881571571f39af500e.jpg" alt="">
+        <img src="https://media.rawg.io/media/games/d89/d89bd0cf4fcdc10820892980cbba0f49.jpg" alt="">
+        <img src="https://media.rawg.io/media/games/b34/b3419c2706f8f8dbe40d08e23642ad06.jpg" alt="">
+        <img src="https://media.rawg.io/media/games/044/044b2ee023930ca138deda151f40c18c.jpg" alt="">
+        <img src="https://media.rawg.io/media/games/fc8/fc839beb76bd63c2a5b176c46bdb7681.jpg" alt="">
+        <img src="https://media.rawg.io/media/games/b7d/b7d3f1715fa8381a4e780571f7cffd93.jpg" alt="">
+        <img src="https://media.rawg.io/media/games/a6c/a6ccd34125c594abf1a9c9821b9a715d.jpg" alt="">
+        <img src="https://media.rawg.io/media/games/951/951572a3dd1e42544bd39a5d5b42d234.jpg" alt="">
+        <img src="https://media.rawg.io/media/games/f24/f2493ea338fe7bd3c7d73750a85a0959.jpg" alt="">
+    </div>
+    <div class="bg-overlay"></div>
+    <div class="w-full max-w-md">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <a href="index.html" class="inline-flex items-center space-x-2">
+                <i class="fas fa-gamepad text-accent text-3xl"></i>
+                <span class="text-2xl font-bold">GameZone</span>
+            </a>
+        </div>
+
+        <!-- Login Card -->
+        <div class="bg-dark/50 backdrop-blur-md rounded-2xl p-8">
+            <h2 class="text-2xl font-bold text-center mb-6">Welcome Back</h2>
+            
+            <!-- Error Message -->
+            <div id="error-message" class="hidden bg-red-500/20 border border-red-500 text-red-400 px-4 py-3 rounded-lg mb-4"></div>
+            
+            <!-- Success Message -->
+            <div id="success-message" class="hidden bg-green-500/20 border border-green-500 text-green-400 px-4 py-3 rounded-lg mb-4"></div>
+
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium mb-2">Email Address</label>
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="email" id="email" name="email" required
+                            class="w-full bg-dark/50 border border-gray-600 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-accent transition"
+                            placeholder="you@example.com">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium mb-2">Password</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="password" id="password" name="password" required
+                            class="w-full bg-dark/50 border border-gray-600 rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-accent transition"
+                            placeholder="••••••••">
+                    </div>
+                </div>
+
+                <button type="submit" id="login-btn"
+                    class="w-full bg-accent text-dark font-bold py-3 rounded-lg hover:bg-accent/90 transition flex items-center justify-center">
+                    <span>Login</span>
+                    <i class="fas fa-spinner fa-spin ml-2 hidden" id="login-spinner"></i>
+                </button>
+            </form>
+
+            <div class="mt-6 text-center text-gray-400">
+                <p>Don't have an account? <a href="register.html" class="text-accent hover:underline">Sign up</a></p>
+            </div>
+        </div>
+
+        <!-- Back to Home -->
+        <div class="text-center mt-6">
+            <a href="index.html" class="text-gray-400 hover:text-accent transition">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Home
+            </a>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script>
+        // Check if already logged in
+        const token = localStorage.getItem('token');
+        if (token) {
+            window.location.href = 'equipment.html';
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error-message');
+            const successDiv = document.getElementById('success-message');
+            const spinner = document.getElementById('login-spinner');
+            const btn = document.getElementById('login-btn');
+            
+            // Reset messages
+            errorDiv.classList.add('hidden');
+            successDiv.classList.add('hidden');
+            spinner.classList.remove('hidden');
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store token and user data
+                    localStorage.setItem('token', data.access_token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    successDiv.textContent = 'Login successful! Redirecting...';
+                    successDiv.classList.remove('hidden');
+                    
+                    // Redirect based on role
+                    setTimeout(() => {
+                        if (data.user.role === 'admin') {
+                            window.location.href = 'admin.html';
+                        } else {
+                            window.location.href = 'equipment.html';
+                        }
+                    }, 1000);
+                } else {
+                    errorDiv.textContent = data.detail || 'Login failed. Please try again.';
+                    errorDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Connection error. Please check your internet.';
+                errorDiv.classList.remove('hidden');
+            } finally {
+                spinner.classList.add('hidden');
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameZone - Professional Flyer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .btn-container {
+            margin-bottom: 30px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #00e5ff 0%, #00b8d4 100%);
+            color: #000;
+            border: none;
+            padding: 18px 50px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 15px 40px rgba(0,229,255,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(0,229,255,0.4);
+        }
+
+        /* Flyer Container - Instagram Story Size */
+        .flyer {
+            width: 1080px;
+            height: 1920px;
+            background: linear-gradient(160deg, #0a0a12 0%, #12121f 40%, #1a1a2d 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Geometric Background Elements */
+        .geo-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .geo-shape {
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .geo-1 {
+            width: 900px;
+            height: 900px;
+            background: radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 60%);
+            top: -300px;
+            right: -300px;
+        }
+
+        .geo-2 {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(155,89,182,0.1) 0%, transparent 60%);
+            bottom: 300px;
+            left: -300px;
+        }
+
+        .geo-3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(46,204,113,0.08) 0%, transparent 60%);
+            bottom: -100px;
+            right: -100px;
+        }
+
+        /* Grid Pattern */
+        .grid-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        /* Content Container */
+        .content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            padding: 70px 80px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Badge */
+        .top-badge {
+            align-self: flex-start;
+            background: linear-gradient(135deg, #ff6b35 0%, #f5a623 100%);
+            color: #000;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            box-shadow: 0 10px 30px rgba(255,107,53,0.4);
+        }
+
+        /* Logo Section */
+        .logo-section {
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 130px;
+            letter-spacing: 12px;
+            line-height: 1;
+            background: linear-gradient(180deg, #ffffff 20%, #00e5ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-tagline {
+            font-size: 20px;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 15px;
+            text-transform: uppercase;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+        /* Main Title */
+        .main-title {
+            margin-top: 60px;
+        }
+
+        .title-line-1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 110px;
+            color: #fff;
+            letter-spacing: 8px;
+            line-height: 1;
+        }
+
+        .title-line-2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 130px;
+            letter-spacing: 8px;
+            line-height: 1;
+            background: linear-gradient(90deg, #00e5ff 0%, #00ff88 50%, #00e5ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Description */
+        .description {
+            margin-top: 35px;
+            font-size: 26px;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.7;
+            max-width: 750px;
+            font-weight: 400;
+        }
+
+        /* Price Section */
+        .price-section {
+            margin-top: 60px;
+            display: flex;
+            align-items: flex-end;
+            gap: 25px;
+        }
+
+        .price-main {
+            background: rgba(0,229,255,0.1);
+            border: 2px solid rgba(0,229,255,0.3);
+            border-radius: 25px;
+            padding: 35px 55px;
+        }
+
+        .price-label {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+        }
+
+        .price-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 95px;
+            color: #00ff88;
+            line-height: 1;
+        }
+
+        .price-per {
+            font-size: 18px;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 3px;
+            margin-top: 5px;
+        }
+
+        /* Features Row */
+        .features-row {
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 25px;
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 18px;
+        }
+
+        .feature-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Includes Section */
+        .includes-section {
+            margin-top: 60px;
+            background: linear-gradient(135deg, rgba(0,229,255,0.08) 0%, rgba(155,89,182,0.08) 100%);
+            border: 1px solid rgba(0,229,255,0.15);
+            border-radius: 30px;
+            padding: 45px 50px;
+        }
+
+        .includes-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 38px;
+            color: #00e5ff;
+            letter-spacing: 6px;
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .includes-items {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .include-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .include-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .include-label {
+            font-size: 15px;
+            color: rgba(255,255,255,0.7);
+            font-weight: 600;
+        }
+
+        /* Payment Section */
+        .payment-section {
+            margin-top: 60px;
+            background: linear-gradient(135deg, #ffc107 0%, #ffab00 100%);
+            border-radius: 30px;
+            padding: 55px;
+            text-align: center;
+            box-shadow: 0 25px 80px rgba(255,193,7,0.25);
+        }
+
+        .payment-header {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            color: rgba(0,0,0,0.8);
+            letter-spacing: 6px;
+            margin-bottom: 20px;
+        }
+
+        .momo-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 85px;
+            color: #000;
+            letter-spacing: 6px;
+            line-height: 1;
+        }
+
+        .momo-name {
+            font-size: 22px;
+            color: rgba(0,0,0,0.6);
+            font-weight: 700;
+            margin-top: 12px;
+        }
+
+        .momo-cta {
+            display: inline-block;
+            background: #000;
+            color: #ffc107;
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 25px;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            padding-top: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .contact-row {
+            display: flex;
+            gap: 50px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .contact-icon {
+            font-size: 28px;
+        }
+
+        .contact-text {
+            font-size: 20px;
+            color: rgba(255,255,255,0.6);
+            font-weight: 500;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 18px;
+        }
+
+        .social-btn {
+            width: 55px;
+            height: 55px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+        }
+
+        /* Games Strip at Bottom */
+        .games-strip {
+            position: absolute;
+            bottom: 180px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            padding: 0 60px;
+        }
+
+        .game-pill {
+            background: rgba(0,0,0,0.7);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="btn-container">
+        <button class="download-btn" onclick="downloadFlyer()">⬇ Download HD Flyer</button>
+    </div>
+
+    <div class="flyer" id="flyer">
+        <!-- Background Elements -->
+        <div class="geo-bg">
+            <div class="geo-shape geo-1"></div>
+            <div class="geo-shape geo-2"></div>
+            <div class="geo-shape geo-3"></div>
+        </div>
+        <div class="grid-pattern"></div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <div class="top-badge">🔥 Now Available On Campus</div>
+
+            <div class="logo-section">
+                <div class="logo">GAMEZONE</div>
+                <div class="logo-tagline">Premium Gaming Rentals</div>
+            </div>
+
+            <div class="main-title">
+                <div class="title-line-1">PS5 GAMING</div>
+                <div class="title-line-2">RENTAL SERVICE</div>
+            </div>
+
+            <p class="description">
+                Experience next-gen gaming delivered & set up in your hostel room. 
+                Play the latest titles without any investment.
+            </p>
+
+            <div class="price-section">
+                <div class="price-main">
+                    <div class="price-label">Starting From</div>
+                    <div class="price-value">GH₵70</div>
+                    <div class="price-per">Per Hour</div>
+                </div>
+            </div>
+
+            <div class="features-row">
+                <div class="feature-card">
+                    <div class="feature-icon">🚚</div>
+                    <div class="feature-title">Free Delivery</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <div class="feature-title">Free Setup</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <div class="feature-title">1-8 Hours</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <div class="feature-title">12+ Games</div>
+                </div>
+            </div>
+
+            <div class="includes-section">
+                <div class="includes-title">📦 WHAT'S INCLUDED</div>
+                <div class="includes-items">
+                    <div class="include-item">
+                        <div class="include-icon">🎮</div>
+                        <div class="include-label">PS5 Console</div>
+                    </div>
+                    <div class="include-item">
+                        <div class="include-icon">📺</div>
+                        <div class="include-label">32" LED TV</div>
+                    </div>
+                    <div class="include-item">
+                        <div class="include-icon">🕹️</div>
+                        <div class="include-label">2 Controllers</div>
+                    </div>
+                    <div class="include-item">
+                        <div class="include-icon">🔌</div>
+                        <div class="include-label">All Cables</div>
+                    </div>
+                    <div class="include-item">
+                        <div class="include-icon">💿</div>
+                        <div class="include-label">Premium Games</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-section">
+                <div class="payment-header">💰 PAY WITH MTN MOMO</div>
+                <div class="momo-number">0592005318</div>
+                <div class="momo-name">NANOA GODFRED</div>
+                <div class="momo-cta">📱 Book Instantly</div>
+            </div>
+
+            <div class="footer">
+                <div class="contact-row">
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <span class="contact-text">0592005318</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">💬</span>
+                        <span class="contact-text">WhatsApp</span>
+                    </div>
+                </div>
+                <div class="social-row">
+                    <div class="social-btn">📸</div>
+                    <div class="social-btn">🐦</div>
+                    <div class="social-btn">📘</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Games Strip -->
+        <div class="games-strip">
+            <span class="game-pill">FIFA 26</span>
+            <span class="game-pill">GTA VI</span>
+            <span class="game-pill">Spider-Man 2</span>
+            <span class="game-pill">God of War</span>
+            <span class="game-pill">NBA 2K26</span>
+        </div>
+    </div>
+
+    <script>
+        async function downloadFlyer() {
+            const flyer = document.getElementById('flyer');
+            const btn = document.querySelector('.download-btn');
+            
+            btn.textContent = '⏳ Generating...';
+            btn.disabled = true;
+
+            try {
+                const canvas = await html2canvas(flyer, {
+                    scale: 2,
+                    backgroundColor: '#0a0a12',
+                    logging: false,
+                    useCORS: true
+                });
+
+                const link = document.createElement('a');
+                link.download = 'GameZone-Flyer.png';
+                link.href = canvas.toDataURL('image/png', 1.0);
+                link.click();
+
+                btn.textContent = '✅ Downloaded!';
+                setTimeout(() => {
+                    btn.textContent = '⬇ Download HD Flyer';
+                    btn.disabled = false;
+                }, 2500);
+            } catch (err) {
+                console.error(err);
+                btn.textContent = '⬇ Download HD Flyer';
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
