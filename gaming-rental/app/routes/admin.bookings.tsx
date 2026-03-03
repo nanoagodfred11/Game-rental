@@ -346,17 +346,19 @@ export default function AdminBookings() {
       )}
 
       {/* Status Filter Tabs */}
-      <Tabs
-        aria-label="Booking status filter"
-        selectedKey={statusFilter}
-        onSelectionChange={handleFilterChange}
-        variant="underlined"
-        color="primary"
-      >
-        {STATUS_FILTERS.map((filter) => (
-          <Tab key={filter.key} title={filter.label} />
-        ))}
-      </Tabs>
+      <div className="overflow-x-auto -mx-4 px-4">
+        <Tabs
+          aria-label="Booking status filter"
+          selectedKey={statusFilter}
+          onSelectionChange={handleFilterChange}
+          variant="underlined"
+          color="primary"
+        >
+          {STATUS_FILTERS.map((filter) => (
+            <Tab key={filter.key} title={filter.label} />
+          ))}
+        </Tabs>
+      </div>
 
       {/* Bookings Table */}
       <Card className="bg-surface-800 border border-white/10">
@@ -373,7 +375,7 @@ export default function AdminBookings() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full text-sm min-w-[800px]">
                 <thead>
                   <tr className="border-b border-white/10 bg-white/5 text-left text-gray-400">
                     <th className="px-4 py-3 font-medium">Booking ID</th>

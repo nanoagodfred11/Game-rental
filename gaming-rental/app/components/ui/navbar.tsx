@@ -22,6 +22,11 @@ export default function Navbar({ user, unreadCount }: NavbarProps) {
   const location = useLocation();
   const isAdmin = user?.role === "admin";
 
+  const publicLinks = [
+    { href: "/equipment", label: "Equipment" },
+    { href: "/reviews", label: "Reviews" },
+  ];
+
   const customerLinks = [
     { href: "/equipment", label: "Equipment" },
     { href: "/bookings", label: "My Bookings" },
@@ -142,7 +147,7 @@ export default function Navbar({ user, unreadCount }: NavbarProps) {
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary-500/30 to-transparent" />
 
       <NavbarMenu className="bg-surface-900/95 backdrop-blur-xl pt-4 border-t border-white/5">
-        {user && customerLinks.map((link) => (
+        {(user ? customerLinks : publicLinks).map((link) => (
           <NavbarMenuItem key={link.href}>
             <Link
               to={link.href}
@@ -163,6 +168,20 @@ export default function Navbar({ user, unreadCount }: NavbarProps) {
               Admin Dashboard
             </Link>
           </NavbarMenuItem>
+        )}
+        {!user && (
+          <>
+            <NavbarMenuItem>
+              <Link to="/auth/login" className="text-gray-300 hover:text-white w-full py-2" onClick={() => setIsMenuOpen(false)}>
+                Login
+              </Link>
+            </NavbarMenuItem>
+            <NavbarMenuItem>
+              <Link to="/auth/register" className="text-primary-400 hover:text-primary-300 font-medium w-full py-2" onClick={() => setIsMenuOpen(false)}>
+                Register
+              </Link>
+            </NavbarMenuItem>
+          </>
         )}
       </NavbarMenu>
     </HeroNavbar>

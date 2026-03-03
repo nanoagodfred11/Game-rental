@@ -4,9 +4,9 @@ import type { ReactNode } from "react";
 export function AnimatedPage({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
       className={className}
     >
       {children}
@@ -24,7 +24,7 @@ export function StaggerContainer({ children, className = "", delay = 0 }: { chil
         visible: {
           opacity: 1,
           transition: {
-            staggerChildren: 0.1,
+            staggerChildren: 0.05,
             delayChildren: delay,
           },
         },
@@ -40,8 +40,8 @@ export function StaggerItem({ children, className = "" }: { children: ReactNode;
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+        hidden: { opacity: 0, y: 10 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.25, ease: "easeOut" } },
       }}
       className={className}
     >
@@ -53,9 +53,9 @@ export function StaggerItem({ children, className = "" }: { children: ReactNode;
 export function AnimatedItem({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut", delay }}
+      transition={{ duration: 0.25, ease: "easeOut", delay }}
       className={className}
     >
       {children}

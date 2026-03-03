@@ -115,18 +115,19 @@ export default function BookingsList() {
         </div>
 
         {/* Status Filter Tabs */}
-        <Tabs
-          aria-label="Booking status filter"
-          selectedKey={statusFilter}
-          onSelectionChange={handleFilterChange}
-          className="mb-6"
-          variant="underlined"
-          color="primary"
-        >
-          {STATUS_FILTERS.map((filter) => (
-            <Tab key={filter.key} title={filter.label} />
-          ))}
-        </Tabs>
+        <div className="overflow-x-auto -mx-4 px-4 mb-6">
+          <Tabs
+            aria-label="Booking status filter"
+            selectedKey={statusFilter}
+            onSelectionChange={handleFilterChange}
+            variant="underlined"
+            color="primary"
+          >
+            {STATUS_FILTERS.map((filter) => (
+              <Tab key={filter.key} title={filter.label} />
+            ))}
+          </Tabs>
+        </div>
 
         {/* Bookings List */}
         {bookings.length === 0 ? (
