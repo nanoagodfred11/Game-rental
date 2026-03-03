@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: gaming-rental
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: MONGODB_URL
+        sync: false # Set manually — use MongoDB Atlas connection string
+      - key: DATABASE_NAME
+        value: gaming_rental
+      - key: SECRET_KEY
+        generateValue: true # Render auto-generates a secure random string
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: NODE_ENV
+        value: production
+      - key: HOURLY_RATE
+        value: "70"
+      - key: MIN_BOOKING_HOURS
+        value: "2"
+      - key: MAX_BOOKING_HOURS
+        value: "6"
+      - key: MAX_TOTAL_HOURS
+        value: "10"
+      - key: MOMO_NUMBER
+        value: "0592005318"
+      - key: MOMO_NAME
+        value: NANOA GODFRED
