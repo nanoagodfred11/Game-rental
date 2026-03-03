@@ -1,0 +1,49 @@
+{
+  "name": "gaming-rental",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "react-router build",
+    "dev": "react-router dev",
+    "start": "react-router-serve ./build/server/index.js",
+    "typecheck": "react-router typegen && tsc"
+  },
+  "dependencies": {
+    "@heroui/react": "^2.8.9",
+    "@react-router/node": "7.12.0",
+    "@react-router/serve": "7.12.0",
+    "bcryptjs": "^3.0.3",
+    "connect-mongo": "^6.0.0",
+    "date-fns": "^4.1.0",
+    "express-rate-limit": "^8.2.1",
+    "express-session": "^1.19.0",
+    "framer-motion": "^12.34.3",
+    "isbot": "^5.1.31",
+    "lucide-react": "^0.575.0",
+    "mongoose": "^9.2.1",
+    "multer": "^2.0.2",
+    "nanoid": "^5.1.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router": "7.12.0",
+    "recharts": "^3.7.0",
+    "sharp": "^0.34.5",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@react-router/dev": "7.12.0",
+    "@tailwindcss/vite": "^4.1.13",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/express-session": "^1.18.2",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^22",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "playwright": "^1.58.2",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.7",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
+}

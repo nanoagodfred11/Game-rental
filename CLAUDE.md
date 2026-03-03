@@ -4,73 +4,90 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a FastAPI backend for a PS5 gaming equipment rental service targeting hostel students in Ghana. The service handles equipment rentals with MTN Mobile Money payment integration.
+PS5 gaming equipment rental service for hostel students in Ghana, with MTN Mobile Money payments. The codebase is in `gaming-rental/` — a full-stack React Router v7 app with server-side MongoDB access (no separate backend).
 
 ## Development Commands
 
 ```bash
-# Setup virtual environment
-py -m venv venv
-.\venv\Scripts\activate  # Windows
+cd gaming-rental
 
 # Install dependencies
-pip install -r requirements.txt
+npm install
 
-# Run development server
-uvicorn main:app --reload
+# Run dev server (port 5173 by default)
+npm run dev
 
-# Run with Python directly
-py main.py
+# Production build & serve (port 3000)
+npm run build
+npm run start
 
-# Docker build and run
-docker build -t gaming-rental .
-docker run -p 8000:8000 --env-file .env gaming-rental
+# Type checking (generates React Router types first)
+npm run typecheck
+
+# E2E tests (requires dev server running on port 3000)
+npx playwright test
+npx playwright test tests/e2e/auth.spec.ts        # single file
+npx playwright test --grep "login"                  # by test name
+
+# Docker
+docker-compose up                                   # app + MongoDB
 ```
 
 ## Architecture
 
-### Tech Stack
-- **Framework**: FastAPI with Pydantic v2 for validation
-- **Database**: MongoDB Atlas with Motor (async driver) and Beanie ODM
-- **Authentication**: JWT tokens (python-jose, passlib/bcrypt)
+### Stack
+- **Framework**: React Router v7 (file-based routing with loaders/actions)
+- **UI**: HeroUI v2 + Tailwind CSS v4 + Framer Motion
+- **Database**: MongoDB via Mongoose (server-side only, `.server.ts` files)
+- **Auth**: Cookie sessions via `createCookieSessionStorage`
+- **Validation**: Zod schemas in `app/lib/validation.ts`
+- **Charts**: Recharts (admin analytics)
 
-### Application Structure
-- `main.py` - Application entry point with FastAPI app, lifespan handler for startup/shutdown, background task for auto-completing expired sessions
-- `app/config.py` - Pydantic Settings loading from `.env`
-- `app/database.py` - MongoDB connection using Motor + Beanie ODM initialization
+### Server Initialization Chain
+`entry.server.tsx` runs on module load: `connectDB()` → `seedDatabase()` → `startBackgroundWorker()`. The seed creates a default admin user and 2 PS5 equipment sets if none exist. The background worker runs every 30s to auto-complete expired sessions, cancel stale bookings, and clean up old notifications.
 
-### Routes (app/routes/)
-- `auth.py` - User registration, login, profile management
-- `bookings.py` - Equipment booking CRUD, session extension
-- `payments.py` - Payment instructions, confirmation, history
-- `admin.py` - Dashboard, equipment management, payment verification
-- `reviews.py` - Customer reviews
-- `promo.py` - Promo code management
-- `analytics.py` - Business analytics
+### Routing Convention
+Routes use React Router v7 flat-file convention in `app/routes/`:
+- Page routes: `bookings.tsx`, `bookings.$bookingId.tsx`, `admin.tsx` (layout), `admin._index.tsx`
+- API routes: `api.bookings.session-time.ts`, `api.promo.validate.ts` (action/loader only, no UI)
+- Auth: `auth.login.tsx`, `auth.register.tsx`, `auth.logout.tsx`
+- Admin is a nested layout (`admin.tsx` wraps all `admin.*` routes) with `requireAdmin` guard
 
-### Models (app/models/)
-All models extend Beanie `Document` for MongoDB persistence:
-- `User` - with `UserRole` enum (CUSTOMER, ADMIN)
-- `Equipment` - with `EquipmentStatus` enum
-- `Booking` - with `BookingStatus` enum
-- `Payment` - MTN MoMo transaction tracking
-- `Review`, `PromoCode`, `Notification`
+### Data Flow
+- **Loaders** fetch data server-side via Mongoose models, return to components
+- **Actions** handle form submissions, validate with Zod, mutate via Mongoose
+- All DB access is in `.server.ts` files (never shipped to client)
+- `requireUser(request)` / `requireAdmin(request)` in `session.server.ts` guard routes
 
-### Services (app/services/)
-- `auth.py` - Password hashing, JWT token creation/verification
-- `utils.py` - Shared utilities
+### Models (`app/models/`)
+Mongoose models with custom string IDs (e.g., `BK-20260303-A1B2`). Key models: User (with roles: customer/admin), Equipment, Booking (10-state status machine), Payment, Review, PromoCode, Notification, Waitlist, AuditLog.
 
-## Key Patterns
+### Booking Status Machine
+Defined in `app/lib/constants.ts` as `VALID_TRANSITIONS`. Flow: `pending` → `payment_received` → `confirmed` → `delivered` → `in_use` → `completed`. Branches for cancellation, refunds, and extensions at various stages.
 
-- **Beanie ODM**: Models use `Document` base class, queries like `User.find_one()`, `Equipment.find().to_list()`
-- **Startup seeding**: Default admin user and 2 PS5 equipment sets created on first run if not present
-- **Background task**: Runs every 30 seconds to auto-complete expired sessions and clean up stale bookings
-- **CORS**: Configured to allow all origins (development mode)
+## Key Conventions
+
+### Tailwind v4 + HeroUI
+HeroUI component styles require scanning `node_modules`. This line in `app/styles/tailwind.css` is critical:
+```css
+@source "../../node_modules/@heroui/theme/dist/**/*.{js,mjs}";
+```
+Without it, HeroUI dynamic utility classes (e.g., `group-data-[filled-within=true]:scale-85`) won't generate and components will look broken.
+
+### Dark Theme Styling
+The app uses a dark gaming theme. Custom CSS theme tokens are defined in `tailwind.css` (`--color-surface-*`, `--color-primary-*`, `--color-accent-*`). Use the `.glass-card` and `.neon-glow-*` utility classes for consistent styling. HeroUI Inputs should use `variant="bordered"` with no placeholder.
+
+### Path Alias
+`~/*` maps to `./app/*` (configured in `tsconfig.json`). All imports use this alias.
+
+### ID Generation
+Custom ID generators in `app/lib/utils.server.ts` produce human-readable IDs like `BK-20260303-A1B2`, `PAY-20260303-X9Y8`. These are stored alongside MongoDB `_id`.
 
 ## Environment Variables
 
-Copy `.env.example` to `.env`. Required variables:
-- `MONGODB_URL` - MongoDB Atlas connection string
-- `SECRET_KEY` - JWT signing key
-
-Business settings are configurable via env vars: `HOURLY_RATE`, `MIN_BOOKING_HOURS`, `MAX_BOOKING_HOURS`, `MOMO_NUMBER`, `MOMO_NAME`.
+Required in `.env` (see `.env.example` in git history):
+- `MONGODB_URL` — MongoDB connection string
+- `DATABASE_NAME` — defaults to `gaming_rental`
+- `SECRET_KEY` — cookie session signing key
+- `ADMIN_EMAIL` / `ADMIN_PASSWORD` — seeded admin account (password must be 12+ chars)
+- Business config: `HOURLY_RATE`, `MOMO_NUMBER`, `MOMO_NAME`

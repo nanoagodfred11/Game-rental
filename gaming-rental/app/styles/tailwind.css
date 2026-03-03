@@ -1,0 +1,292 @@
+@import "tailwindcss";
+
+/* Scan HeroUI component files so Tailwind v4 generates their utility classes */
+@source "../../node_modules/@heroui/theme/dist/**/*.{js,mjs}";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Dark surface colors */
+  --color-surface-900: #0a0a0f;
+  --color-surface-800: #12121a;
+  --color-surface-700: #1a1a25;
+  --color-surface-600: #222230;
+  --color-surface-500: #2a2a3a;
+
+  /* Neon cyan primary */
+  --color-primary-50: #ecfeff;
+  --color-primary-100: #cffafe;
+  --color-primary-200: #a5f3fc;
+  --color-primary-300: #67e8f9;
+  --color-primary-400: #22d3ee;
+  --color-primary-500: #06b6d4;
+  --color-primary-600: #0891b2;
+  --color-primary-700: #0e7490;
+  --color-primary-800: #155e75;
+  --color-primary-900: #164e63;
+
+  /* Neon purple accent */
+  --color-accent-50: #faf5ff;
+  --color-accent-100: #f3e8ff;
+  --color-accent-200: #e9d5ff;
+  --color-accent-300: #d8b4fe;
+  --color-accent-400: #c084fc;
+  --color-accent-500: #a855f7;
+  --color-accent-600: #9333ea;
+  --color-accent-700: #7e22ce;
+  --color-accent-800: #6b21a8;
+  --color-accent-900: #581c87;
+
+  /* Status colors on dark */
+  --color-success-50: #052e16;
+  --color-success-100: #064e3b;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+
+  --color-warning-50: #422006;
+  --color-warning-100: #713f12;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+
+  --color-danger-50: #450a0a;
+  --color-danger-100: #7f1d1d;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+
+  /* Neon pink/magenta highlight */
+  --color-neon-pink: #ec4899;
+  --color-neon-magenta: #f43f8f;
+
+  /* Animation */
+  --animate-gradient-shift: gradient-shift 8s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-scan: scan 4s linear infinite;
+
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  @keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+}
+
+/* Body base */
+html, body {
+  @apply bg-surface-900 text-gray-100 antialiased;
+}
+
+/* Glass card */
+.glass-card {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl;
+}
+
+/* Neon glows */
+.neon-glow-cyan {
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.3), 0 0 30px rgba(6, 182, 212, 0.1);
+}
+
+.neon-glow-purple {
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.3), 0 0 30px rgba(168, 85, 247, 0.1);
+}
+
+.neon-glow-pink {
+  box-shadow: 0 0 15px rgba(236, 72, 153, 0.3), 0 0 30px rgba(236, 72, 153, 0.1);
+}
+
+/* Neon text */
+.neon-text-cyan {
+  color: #22d3ee;
+  text-shadow: 0 0 10px rgba(6, 182, 212, 0.5), 0 0 20px rgba(6, 182, 212, 0.3), 0 0 40px rgba(6, 182, 212, 0.1);
+}
+
+.neon-text-purple {
+  color: #c084fc;
+  text-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.3);
+}
+
+/* Gradient border */
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, #06b6d4, #a855f7, #ec4899);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Scanline overlay */
+.scanline-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.02) 2px,
+    rgba(255, 255, 255, 0.02) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Grid pattern overlay for hero */
+.grid-pattern {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* HUD corner brackets */
+.hud-corners {
+  position: relative;
+}
+
+.hud-corners::before,
+.hud-corners::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.hud-corners::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid #22d3ee;
+  border-left: 2px solid #22d3ee;
+}
+
+.hud-corners::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid #22d3ee;
+  border-right: 2px solid #22d3ee;
+}
+
+/* ==================== HeroUI Input Overrides ==================== */
+/* Fix label/placeholder overlap and ensure clear dark-theme inputs */
+:root {
+  --heroui-default-100: rgba(255, 255, 255, 0.06);
+  --heroui-default-200: rgba(255, 255, 255, 0.1);
+}
+
+/* Shared input style helper */
+.input-dark [data-slot="input-wrapper"] {
+  @apply bg-white/5 border-white/10;
+}
+
+.input-dark [data-slot="input-wrapper"]:hover {
+  @apply border-primary-500/50;
+}
+
+.input-dark [data-slot="label"] {
+  @apply text-gray-400;
+}
+
+.input-dark [data-slot="input"] {
+  @apply text-white;
+}
+
+/* Better section headings */
+.section-heading {
+  @apply text-3xl md:text-4xl font-bold text-white mb-4;
+}
+
+.section-subheading {
+  @apply text-gray-400 max-w-2xl mx-auto;
+}
+
+/* Improved glass card with subtle hover */
+.glass-card-hover {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl transition-all duration-300;
+}
+
+.glass-card-hover:hover {
+  @apply bg-white/[0.07] border-white/15 -translate-y-1;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Trust badge strip */
+.trust-strip {
+  @apply flex items-center justify-center gap-8 flex-wrap py-6;
+}
+
+.trust-item {
+  @apply flex items-center gap-2.5 text-sm font-medium text-gray-400;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a3a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a4a;
+}
+
+/* Hide scrollbar for game carousel */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile-first improvements */
+@media (max-width: 640px) {
+  /* Better touch targets for inputs */
+  [data-slot="input-wrapper"] {
+    min-height: 48px;
+  }
+
+  /* Tighter section padding on mobile */
+  .section-heading {
+    @apply text-2xl;
+  }
+
+  /* Prevent horizontal overflow */
+  html, body {
+    overflow-x: hidden;
+  }
+
+  /* Navbar compact on mobile */
+  nav[data-slot="navbar"] {
+    @apply px-2;
+  }
+}
